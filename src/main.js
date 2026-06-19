@@ -6,9 +6,9 @@ const QUALITY = IS_MOBILE ? 0.52 : 1.0;
 
 
 const CONFIG = {
-  speed: 9.0,
-  acceleration: 18,
-  friction: 14,
+  speed: 10.0,
+  acceleration: 20,
+  friction: 16,
   interactDistance: 3.8,
 
   // Distância maior entre o início e o QR Code
