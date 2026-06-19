@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lara presents</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="loadingScreen">
+    <div class="loader-card">
+      <h1>For Lara🌟</h1>
+      <button id="startButton" disabled>Começar</button>
+      <small id="loadStatus">Carregando modelo...</small>
+    </div>
+  </div>
+
+  <div id="hud">
+    <div class="hud-row"><b>Movimento:</b> W A S D / setas</div>
+    <div id="objectiveText" class="sr-only">Siga a passarela até o QR Code.</div>
+  </div>
+
+  <div id="interactionHint">Pressione <b>E</b> para abrir o QR Code</div>Pressione <b>E</b> para abrir o QR Code</div>
+
+  <div id="qrModal">
+    <div class="modal-card">
+      <p>Escaneie ou clique no QR Code abaixo.</p>
+      <a class="qr-click-link" href="https://open.spotify.com/intl-pt/track/1kFevEv3s7Gf6o5xSDR5DL?si=4784daa51f19404b" target="_blank" rel="noopener noreferrer" title="Abrir no Spotify">
+        <img src="./assets/qr-code.png" alt="QR Code" />
+      </a>
+      <button id="closeQr">Fechar</button>
+    </div>
+  </div>
+
+  <div id="mobileControls">
+    <button class="ctrl" id="up">▲</button>
+    <button class="ctrl" id="left">◀</button>
+    <button class="ctrl" id="down">▼</button>
+    <button class="ctrl" id="right">▶</button>
+    <button class="ctrl action" id="interact">QR</button>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
