@@ -364,3 +364,36 @@ body {
 .qr-click-link img {
   display: block;
 }
+
+
+/* Otimização visual para celular */
+@media (max-width: 768px) {
+  #hud {
+    width: calc(100vw - 24px);
+    left: 12px;
+    top: 12px;
+    padding: 12px 14px;
+  }
+
+  .hud-title {
+    font-size: 15px;
+  }
+
+  .hud-row {
+    font-size: 13px;
+  }
+
+  #mobileControls {
+    transform: scale(0.92);
+    transform-origin: right bottom;
+  }
+
+  .modal-card {
+    width: min(92vw, 390px);
+    padding: 18px;
+  }
+
+  .modal-card img {
+    width: min(245px, 72vw);
+  }
+}

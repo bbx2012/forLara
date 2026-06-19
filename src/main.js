@@ -1,6 +1,10 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+const IS_MOBILE = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const QUALITY = IS_MOBILE ? 0.52 : 1.0;
+
+
 const CONFIG = {
   speed: 8.0,
   acceleration: 16,
@@ -20,7 +24,7 @@ const CONFIG = {
   worldRight: new THREE.Vector3(1, 0, 0),
 
   pathTileSpacing: 2.75,
-  pathTileCount: 31
+  pathTileCount: IS_MOBILE ? 24 : 31
 };
 
 const state = {
@@ -52,9 +56,9 @@ const camera = new THREE.PerspectiveCamera(57, window.innerWidth / window.innerH
 camera.position.set(0, 6, 14);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(IS_MOBILE ? 1 : Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = !IS_MOBILE;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -112,7 +116,7 @@ function setupLights() {
   const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
   keyLight.position.set(8, 18, 12);
   keyLight.castShadow = true;
-  keyLight.shadow.mapSize.set(2048, 2048);
+  keyLight.shadow.mapSize.set(IS_MOBILE ? 512 : 1024, IS_MOBILE ? 512 : 1024);
   keyLight.shadow.camera.near = 1;
   keyLight.shadow.camera.far = 120;
   keyLight.shadow.camera.left = -30;
@@ -146,7 +150,7 @@ function setupWorld() {
 
 function createVoidFloor() {
   const floor = new THREE.Mesh(
-    new THREE.CircleGeometry(60, 80),
+    new THREE.CircleGeometry(60, IS_MOBILE ? 36 : 80),
     new THREE.MeshStandardMaterial({
       color: 0x070b16,
       roughness: 0.92,
@@ -161,7 +165,7 @@ function createVoidFloor() {
   scene.add(floor);
 
   const glow = new THREE.Mesh(
-    new THREE.RingGeometry(12, 58, 128),
+    new THREE.RingGeometry(12, 58, IS_MOBILE ? 48 : 128),
     new THREE.MeshBasicMaterial({
       color: 0x20305f,
       transparent: true,
@@ -226,7 +230,7 @@ function createFloatingPath() {
 }
 
 function createStarField() {
-  const count = 2800;
+  const count = IS_MOBILE ? 650 : 1800;
   const positions = new Float32Array(count * 3);
   const colors = new Float32Array(count * 3);
 
@@ -257,7 +261,7 @@ function createStarField() {
   geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
   const material = new THREE.PointsMaterial({
-    size: 0.22,
+    size: IS_MOBILE ? 0.16 : 0.22,
     vertexColors: true,
     transparent: true,
     opacity: 0.95,
@@ -273,7 +277,9 @@ function createStarField() {
 function createNebulaPanels() {
   const nebulaTexture = createNebulaTexture();
 
-  const positions = [
+  const positions = IS_MOBILE ? [
+    { x: -22, y: 13, z: -35, ry: 0.6, s: 15 }
+  ] : [
     { x: -22, y: 13, z: -28, ry: 0.6, s: 16 },
     { x: 23, y: 10, z: -48, ry: -0.4, s: 19 },
     { x: -18, y: 7, z: -68, ry: 0.3, s: 13 }
@@ -340,7 +346,7 @@ function createPlanets() {
     group.position.set(x, y, z);
 
     const planet = new THREE.Mesh(
-      new THREE.SphereGeometry(size, 36, 36),
+      new THREE.SphereGeometry(size, IS_MOBILE ? 20 : 36, IS_MOBILE ? 20 : 36),
       new THREE.MeshStandardMaterial({
         color,
         emissive,
@@ -352,7 +358,7 @@ function createPlanets() {
 
     if (ring) {
       const ringMesh = new THREE.Mesh(
-        new THREE.RingGeometry(size * 1.3, size * 1.9, 64),
+        new THREE.RingGeometry(size * 1.3, size * 1.9, IS_MOBILE ? 32 : 64),
         new THREE.MeshBasicMaterial({
           color: 0xb9dfff,
           transparent: true,
@@ -380,7 +386,7 @@ function createFloatingRocks() {
     metalness: 0.06
   });
 
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < (IS_MOBILE ? 10 : 22); i++) {
     let x = (Math.random() - 0.5) * 34;
     let z = CONFIG.qrPosition.z + Math.random() * 95;
     let y = 0.1 + Math.random() * 1.2;
@@ -407,7 +413,7 @@ function createLightBeacons() {
 
   const lampMat = new THREE.MeshBasicMaterial({ color: 0xcffffd });
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < (IS_MOBILE ? 5 : 8); i++) {
     const z = CONFIG.startPosition.z - 7 - i * 10.5;
 
     [-3.2, 3.2].forEach((x) => {
@@ -605,7 +611,7 @@ function loadCharacter() {
         const pct = Math.round((progress.loaded / progress.total) * 100);
         ui.loadStatus.textContent = `Carregando modelo: ${pct}%`;
       } else {
-        ui.loadStatus.textContent = "Carregando modelo...";
+        ui.loadStatus.textContent = IS_MOBILE ? "Modo celular otimizado ativado..." : "Carregando modelo...";
       }
     },
     (error) => {

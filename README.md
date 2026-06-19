@@ -1,9 +1,18 @@
 # Busca do QR Code - Novo GLB integrado
 
-Esta versão usa o novo arquivo 
+Esta versão usa o novo arquivo que você enviou:
+
+```txt
+assets/personagem_novo.glb
 ```
 
+## Como rodar
 
+1. Extraia o ZIP.
+2. Abra a pasta no VS Code.
+3. Use a extensão **Live Server**.
+4. Clique com o botão direito em `index.html`.
+5. Escolha **Open with Live Server**.
 
 ## Controles
 
@@ -22,8 +31,9 @@ Esta versão usa o novo arquivo
 - Texturas: 3
 - Imagens embutidas: 3
 
-##Correção aplicada
+## Correção aplicada
 
+Mantive a correção para evitar o personagem preto/sem cor:
 - `SRGBColorSpace` nas texturas;
 - luz ambiente e luz frontal reforçadas;
 - material com `metalness` menor;
@@ -38,12 +48,24 @@ Esta versão corrige a orientação do personagem:
 - S / seta para baixo: volta para o início;
 - A / seta esquerda: vai para esquerda;
 - D / seta direita: vai para direita;
-- o modelo recebeu `modelYawOffset = Math.PI / 2` 
+- o modelo recebeu `modelYawOffset = Math.PI / 2` para não ficar de lado ao andar.
+
+Se outro GLB futuro ficar invertido, no arquivo `src/main.js` altere:
+
+```js
+modelYawOffset: Math.PI / 2
+```
+
+para:
+
+```js
+modelYawOffset: -Math.PI / 2
 ```
 
 
 ## Correção W/S
 
+Nesta versão eu mantive o movimento das teclas igual, mas inverti a frente visual do GLB.
 
 Antes:
 - W movia para frente, mas o personagem olhava para baixo/trás;
@@ -64,6 +86,11 @@ modelYawOffset: -Math.PI / 2
 
 O QR Code enviado foi colocado no projeto como:
 
+```txt
+assets/qr-code.png
+```
+
+Ele aparece em dois lugares:
 - na placa 3D dentro do mapa;
 - na janela/modal quando o jogador pressiona `E` perto da placa.
 
@@ -82,6 +109,7 @@ O QR Code enviado foi colocado no projeto como:
 - início: `z = 16`
 - QR Code: `z = -66`
 
+Isso deixou o percurso muito maior do que a versão anterior.
 
 
 ## Ajustes desta versão
@@ -102,9 +130,23 @@ O QR Code enviado foi colocado no projeto como:
 
 ## Link no QR Code
 
+Além de escanear, agora também é possível clicar no QR Code no popup final.
 
 Link configurado:
 
 ```txt
 https://open.spotify.com/intl-pt/track/1kFevEv3s7Gf6o5xSDR5DL?si=4784daa51f19404b
 ```
+
+
+## Versão otimizada para celular
+
+Alterações de desempenho:
+- limite de pixel ratio no celular;
+- sombras desativadas no celular;
+- menos estrelas e objetos decorativos;
+- menos rochas/luzes/efeitos;
+- geometria mais leve;
+- controles mobile ajustados.
+
+Se ainda travar, o maior peso é o arquivo `assets/personagem_novo.glb`, que tem cerca de 15 MB. Para ficar ainda mais leve, seria necessário comprimir o GLB no Blender ou exportar com textura menor.
