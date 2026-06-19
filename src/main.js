@@ -6,7 +6,7 @@ const QUALITY = IS_MOBILE ? 0.52 : 1.0;
 
 
 const CONFIG = {
-  speed: 8.0,
+  speed: 8.6,
   acceleration: 16,
   friction: 12,
   interactDistance: 3.8,
